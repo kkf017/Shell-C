@@ -14,8 +14,10 @@
 
 
 
-#define COLOR1 BHMAG //BHCYN 
-#define COLOR2 BHGRN //BHYEL 
+#define COLOR1 BHMAG //see color.h file
+#define COLOR2 BHGRN 
+
+#define HOME "/home/username" // path defined as ~ (linux)
 
 
 int main(int argc, char *argv[]){
@@ -25,8 +27,8 @@ int main(int argc, char *argv[]){
 	
 	int flag;
 
-	char *home = concatenate("/home/", getlogin());
-	chdir(home); // get ~ folder
+	//char *home = concatenate("/home/", getlogin());
+	chdir(HOME); // get ~ folder
 	
 	// Ignore SIGQUIT et SIGTERM
 	struct sigaction signalIgnore;  
@@ -51,7 +53,7 @@ int main(int argc, char *argv[]){
 		//read line
 		str = NULL;
 		n = 0;
-		printf("\n\033[%sbash-os\033[0m:\033[%s%s\033[0m$ ",COLOR1, COLOR2,workdir); // change to display actual folder + changedir function
+		printf("\n\033[%sbash-os\033[0m:\033[%s%s\033[0m$ ",COLOR1, COLOR2,workdir); 
 		size = getline(&str, &n, stdin);
 		
 		//parse line
@@ -80,12 +82,15 @@ int main(int argc, char *argv[]){
 		taskManager(argV, argC, flag);
 			
 		
-		// reimplementer cd (changedir function) + fonction inexistante dans /bin/
+		// implement cd (changedir function) - /bin/ function is not working
+
+        	// implement non-existent function in  /bin/
+
 		
-		// Signals - gérer Ctrl+C
+		// Signals - manage Ctrl+C
 		
-		// custom - colors, font...etc - girly
-		
+		// custom - colors, font...etc -
+
 		
 		//free (allocated)
 		free(str);
