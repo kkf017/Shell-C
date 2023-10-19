@@ -4,4 +4,4 @@
 
 
 #define USER "bash-os" // linux system username
-#define HOME "/home/kk" // path defined as ~ (linux)
+#define HOME "/home/user" // path defined as ~ (linux)

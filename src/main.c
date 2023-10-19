@@ -68,17 +68,6 @@ void shell(){
 		if(strcmp(*argV, "exit") == 0){
 			exitp();
 		}
-
-        /*if(access(*argv, F_OK|X_OK) == 0){
-            //system(*argv); // executable 
-
-            // execl("/home/amir/Desktop/OSAssignment/script.sh","script.sh",NULL);
-         
-            if(execv(*argv, argv) == -1){
-			    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m");
-            }
-          }
-		 */ // only foreground task - add to background task
 		
 	
 		taskManager(argV, argC, flag); 
@@ -87,18 +76,18 @@ void shell(){
 		// implement cd (changedir function) - /bin/ function is not working
                 // could be executable (from changedir function) - to call with execv
 
-        // implement non-existent function in  /bin/
+        	// implement non-existent function in  /bin/
 
 		
 		// Signals - manage Ctrl+C, ENTER
 		
 		// custom - colors, font...etc -
 
-        /* Not working:
-                press tab to get full path
-                execute script.sh
-                history command
-                sudo apt-get install
+        	/* Not working:
+		        press tab to get full path
+		        execute script.sh
+		        history command
+		        sudo apt-get install
                 */
 
 		
