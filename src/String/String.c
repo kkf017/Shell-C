@@ -10,7 +10,7 @@
 int count(char *str, ssize_t n){
 	char *strCp = malloc(sizeof(char) * n);
 	if (strCp==NULL){
-		exitf("\n[-]ERROR: Allocation error.");
+		exitf("\n\033[0;91m[-]ERROR: Allocation error.\033[0m");
 	}
 	strcpy(strCp, str);
 	char *token = strtok(strCp, " \n");
@@ -27,7 +27,7 @@ int count(char *str, ssize_t n){
 int contains(char *str, char c, ssize_t n){
 	char *strCp = malloc(sizeof(char) * n);
 	if (strCp==NULL){
-		exitf("\n[-]ERROR: Allocation error.");
+		exitf("\n\033[0;91m[-]ERROR: Allocation error.\033[0m");
 	}
 	strcpy(strCp, str);
 	if(*(strCp+(n-2))==c|| *(strCp+(n-2))==c){
@@ -60,7 +60,7 @@ char *concatenate(char *str1, char *str2){
 	for(i = 0; str2[i] != '\0'; i++);
 	char *strCp = malloc(sizeof(char) * (i+strlen(str1)));
 	if (strCp==NULL){
-		exitf("\n[-]ERROR: Allocation error.");
+		exitf("\n\033[0;91m[-]ERROR: Allocation error.\033[0m");
 	}
 	strcpy(strCp, str1);
 	strcat(strCp, str2);

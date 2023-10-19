@@ -12,12 +12,16 @@
 #include "../Signal/Signal.h"
 #include "../Processus/Processus.h"
 
+#include "../Builtin/Builtin.h" // change dependency
+
+
+
 void backgroundTask(char **argv, int argc){
 	TPID_T **background = getBackground();
 	
 	char *SysCall = malloc(sizeof(char) * (5+strlen(*(argv))));
 	if (SysCall==NULL){
-		exitf("\n[-]ERROR: Allocation error.");
+		exitf("\n\033[0;91m[-]ERROR: Allocation error.\033[0m"); 
 	} 
 	sprintf(SysCall,"/bin/%s", *(argv));
 
@@ -33,12 +37,18 @@ void backgroundTask(char **argv, int argc){
 		dup2(out, 0);
 		dup2(out, 1);
 		close(out);
-		
-		if(execvp(SysCall, argv) == -1){
-		//if(execv(SysCall, argv) == -1){
-			exitf("\n[-]ERROR: Process execution failed.");
-				
-		}
+
+
+        if(strcmp(*argv, "cd") == 0){
+                    changedir(argv, argc); 
+
+	    }else{
+		    if(execvp(SysCall, argv) == -1){
+		    //if(execv(SysCall, argv) == -1){
+			    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m"); 
+				    
+		    }
+        }
 	}else if(pid > 0){
 		// process parent
 		//Background = pid; - push(background, pid)
@@ -51,7 +61,7 @@ void backgroundTask(char **argv, int argc){
 		
 
 	}else{
-		exitf("\n[-]ERROR: fork() failed.");
+		exitf("\n\033[0;91m[-]ERROR: fork() failed.\033[0m"); 
 	}
 	free(SysCall);
 	SysCall = NULL;
@@ -64,7 +74,7 @@ void foregroundTask(char **argv, int argc){
 
 	char *SysCall = malloc(sizeof(char) * (5+strlen(*(argv))));
 	if (SysCall==NULL){
-		exitf("\n[-]ERROR: Allocation error.");
+		exitf("\n\033[0;91m[-]ERROR: Allocation error.\033[0m"); 
 	} 
 	sprintf(SysCall,"/bin/%s", *(argv));
 
@@ -75,9 +85,28 @@ void foregroundTask(char **argv, int argc){
 	
 	if(*foreground == 0){
 		// process child
-		if(execv(SysCall, argv) == -1){
-			exitf("\n[-]ERROR: Process execution failed.");
-		}
+
+        
+       /*if(strcmp(*argv, "unixcorn") == 0){
+                execlp("python3", "python3", "/home/kk/Documents/main.py", "- Lilly loves U", (char*) NULL);
+
+        }else*/ 
+        if(strcmp(*argv, "cd") == 0){
+                    changedir(argv, argc);
+
+	    }else if(access(*argv, F_OK|X_OK) == 0){
+            //system(*argv); // executable 
+
+            // execl("/home/amir/Desktop/OSAssignment/script.sh","script.sh",NULL);
+         
+            if(execv(*argv, argv) == -1){
+			    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m");
+		    }            
+        }else{
+		    if(execv(SysCall, argv) == -1){
+			    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m");
+		    }
+        }
 
 	}else if(*foreground > 0){
 		// process parent
@@ -93,7 +122,7 @@ void foregroundTask(char **argv, int argc){
 		printf("\n\033[1;90mForeground parent: My child exited with status %d\033[0m\n", status);
 
 	}else{
-		exitf("\n[-]ERROR: fork() failed.");
+		exitf("\n\033[0;91m[-]ERROR: fork() failed.\033[0m");
 	}
 	free(SysCall);
 	SysCall = NULL;
@@ -102,8 +131,7 @@ void foregroundTask(char **argv, int argc){
 
 
 
-void taskManager(char **argv, int argc, int flag){
-	
+void taskManager(char **argv, int argc, int flag){	
 	if(flag){
 		backgroundTask(argv, argc);
 	}else{

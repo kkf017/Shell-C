@@ -1,26 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <string.h>
 
 #include <unistd.h>
 #include <sys/wait.h>
 
-#include "Colors/colors.h"
+#include "Global.h"
+
 #include "Tools/Tools.h"
 #include "String/String.h"
 #include "Signal/Signal.h"
 #include "Task/Tasks.h"
 
 
-
-#define COLOR1 BHMAG //see color.h file
-#define COLOR2 BHGRN 
-
-#define HOME "/home/username" // path defined as ~ (linux)
-
-
-int main(int argc, char *argv[]){
+void shell(){
 	char *str;
 	size_t n;
 	ssize_t size;
@@ -50,15 +43,14 @@ int main(int argc, char *argv[]){
 	while(1){
 		char *workdir = getcwd(NULL, 0);
 	
-		//read line
 		str = NULL;
 		n = 0;
-		printf("\n\033[%sbash-os\033[0m:\033[%s%s\033[0m$ ",COLOR1, COLOR2,workdir); 
+		printf("\n\033[%s%s\033[0m:\033[%s%s\033[0m$ ",COLOR1, USER, COLOR2,workdir); 
 		size = getline(&str, &n, stdin);
 		
-		//parse line
+
 		if (size == -1){
-			exitf("\n[-]ERROR: Command not found.");
+			exitf("\n\033[0;91m[-]ERROR: Command not found.\033[0m.");
 		}			
 
 		int argC = count(str, size);	
@@ -76,29 +68,52 @@ int main(int argc, char *argv[]){
 		if(strcmp(*argV, "exit") == 0){
 			exitp();
 		}
+
+        /*if(access(*argv, F_OK|X_OK) == 0){
+            //system(*argv); // executable 
+
+            // execl("/home/amir/Desktop/OSAssignment/script.sh","script.sh",NULL);
+         
+            if(execv(*argv, argv) == -1){
+			    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m");
+            }
+          }
+		 */ // only foreground task - add to background task
 		
-			
-		//execute comand		
-		taskManager(argV, argC, flag);
+	
+		taskManager(argV, argC, flag); 
 			
 		
 		// implement cd (changedir function) - /bin/ function is not working
+                // could be executable (from changedir function) - to call with execv
 
-        	// implement non-existent function in  /bin/
+        // implement non-existent function in  /bin/
 
 		
-		// Signals - manage Ctrl+C
+		// Signals - manage Ctrl+C, ENTER
 		
 		// custom - colors, font...etc -
+
+        /* Not working:
+                press tab to get full path
+                execute script.sh
+                history command
+                sudo apt-get install
+                */
 
 		
 		//free (allocated)
 		free(str);
 		freeS(argV, argC);
 		
-		sleep(3);
+		//sleep(1);
 		
 	}
-	
-	return 1;
+}
+
+
+int main(int argc, char *argv[]){
+
+    shell();
+    return 1;
 }

@@ -1,41 +1,44 @@
 COMPILATEUR=gcc
 EXEC=main
 SOURCE=src/main
-SOURCE1=src/Tools/Tools
-SOURCE2=src/String/String
-SOURCE3=src/Signal/Signal
-SOURCE4=src/Task/Tasks
-SOURCE5=src/Processus/Processus
-SOURCE6=src/Colors/colors
+GLOBAL=src/Global
+TOOLS=src/Tools/Tools
+STRING=src/String/String
+BUILTIN=src/Builtin/Builtin
+PROCESSUS=src/Processus/Processus
+SIGNAL=src/Signal/Signal
+TASKS=src/Task/Tasks
+
 
 
 all: prog clean
 
-prog: main.o file1.o file2.o file3.o file4.o file5.o
+prog: main.o Tools.o String.o Builtin.o Processus.o Signal.o Tasks.o
 	gcc *.o -o $(EXEC)
 
-main.o: $(SOURCE).c $(SOURCE1).h $(SOURCE2).h $(SOURCE3).h $(SOURCE6).h
+main.o: $(SOURCE).c $(GLOBAL).h $(TOOLS).h $(STRING).h $(SIGNAL).h $(TASKS).h
 	gcc -g -Wall -c $(SOURCE).c
 
 
-file1.o: $(SOURCE1).c $(SOURCE1).h
-	gcc -g -Wall -c $(SOURCE1).c
+Tools.o: $(TOOLS).c $(TOOLS).h
+	gcc -g -Wall -c $(TOOLS).c
 
+String.o: $(STRING).c $(STRING).h $(TOOLS).h
+	gcc -g -Wall -c $(STRING).c
 
-file2.o: $(SOURCE2).c $(SOURCE2).h $(SOURCE1).h
-	gcc -g -Wall -c $(SOURCE2).c
-	
-file5.o: $(SOURCE5).c $(SOURCE5).h
-	gcc -g -Wall -c $(SOURCE5).c
-	
-file3.o: $(SOURCE3).c $(SOURCE3).h $(SOURCE5).h
-	gcc -g -Wall -c $(SOURCE3).c
-	
-		
-file4.o: $(SOURCE4).c $(SOURCE4).h $(SOURCE1).h $(SOURCE5).h
-	gcc -g -Wall -c $(SOURCE4).c
-	
+Builtin.o: $(BUILTIN).c $(BUILTIN).h $(TOOLS).h $(GLOBAL).h
+	gcc -g -Wall -c $(BUILTIN).c
+
+Processus.o: $(PROCESSUS).c $(PROCESSUS).h
+	gcc -g -Wall -c $(PROCESSUS).c
+
+Signal.o: $(SIGNAL).c $(SIGNAL).h $(PROCESSUS).h
+	gcc -g -Wall -c $(SIGNAL).c
+
+Tasks.o: $(TASKS).c $(TASKS).h $(TOOLS).h $(SIGNAL).h $(PROCESSUS).h $(BUILTIN).h
+	gcc -g -Wall -c $(TASKS).c
+
 clean:
 	rm -rf *.o
-	
-	
+
+
