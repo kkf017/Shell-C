@@ -88,7 +88,7 @@ void foregroundTask(char **argv, int argc){
 
         
        /*if(strcmp(*argv, "unixcorn") == 0){
-                // execlp("python3", "python3", "/home/kk/Documents/main.py", "- Lilly loves U", (char*) NULL);
+                // execlp("python3", "python3", "/home/user/Documents/main.py", "- Lilly loves U", (char*) NULL);
               
                  char *pythonArgs[]={"python3",*(argv+1),*(argv+1),"c",NULL};
                  execvp("python3",pythonArgs);
