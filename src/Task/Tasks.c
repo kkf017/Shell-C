@@ -12,7 +12,7 @@
 #include "../Signal/Signal.h"
 #include "../Processus/Processus.h"
 
-#include "../Builtin/Builtin.h" 
+#include "../Builtin/Builtin.h" // change dependency
 
 
 
@@ -33,7 +33,7 @@ void backgroundTask(char **argv, int argc){
 	
 	if(pid == 0){
 		// process child
-		int out = open("/dev/null",O_RDWR);
+		int out = open("/dev/null",O_RDWR); // gère la redirection
 		dup2(out, 0);
 		dup2(out, 1);
 		close(out);
@@ -85,23 +85,37 @@ void foregroundTask(char **argv, int argc){
 	
 	if(*foreground == 0){
 		// process child
-		
-		if(strcmp(*argv, "cd") == 0){
-		            changedir(argv, argc);
 
-		}else if(access(*argv, F_OK|X_OK) == 0){
-		    //system(*argv); // executable 
+        
+       /*if(strcmp(*argv, "unixcorn") == 0){
+                // execlp("python3", "python3", "/home/kk/Documents/main.py", "- Lilly loves U", (char*) NULL);
+              
+                 char *pythonArgs[]={"python3",*(argv+1),*(argv+1),"c",NULL};
+                 execvp("python3",pythonArgs);
 
-		    // execl("/home/amir/Desktop/OSAssignment/script.sh","script.sh",NULL);
-		 
-		    	if(execv(*argv, argv) == -1){
-				    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m");
-			    }            
-		}else{
-			    if(execv(SysCall, argv) == -1){
-				    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m");
-			    }
-		}
+        }else */
+        if(strcmp(*argv, "cd") == 0){
+                    changedir(argv, argc);
+
+	    }else if(access(*argv, F_OK|X_OK) == 0){
+
+            char *path = realpath(*argv, NULL);
+
+            if(execv(*argv, argv) != -1){
+            
+            }else if(execlp(path, path,"-c",argv+1, NULL)!=-1){ // to add in background task
+                    // execution script.sh - not working well !!!!
+                    //                     - not working with multiple arguments
+              
+            }else{
+                exitf("\n\033[0;91m[-]ERROR: Unknown command.\033[0m");
+
+            }        
+        }else{
+		    if(execv(SysCall, argv) == -1){
+			    exitf("\n\033[0;91m[-]ERROR: Process execution failed.\033[0m");
+		    }
+        }
 
 	}else if(*foreground > 0){
 		// process parent

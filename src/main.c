@@ -68,7 +68,6 @@ void shell(){
 		if(strcmp(*argV, "exit") == 0){
 			exitp();
 		}
-		
 	
 		taskManager(argV, argC, flag); 
 			
@@ -76,18 +75,18 @@ void shell(){
 		// implement cd (changedir function) - /bin/ function is not working
                 // could be executable (from changedir function) - to call with execv
 
-        	// implement non-existent function in  /bin/
+        // implement non-existent function in  /bin/
 
 		
 		// Signals - manage Ctrl+C, ENTER
 		
 		// custom - colors, font...etc -
 
-        	/* Not working:
-		        press tab to get full path
-		        execute script.sh
-		        history command
-		        sudo apt-get install
+        /* Not working:
+                press tab to get full path
+                execute script.sh
+                history command
+                sudo apt-get install
                 */
 
 		
@@ -95,7 +94,7 @@ void shell(){
 		free(str);
 		freeS(argV, argC);
 		
-		//sleep(1);
+		sleep(2);
 		
 	}
 }
